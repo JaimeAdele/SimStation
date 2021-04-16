@@ -109,8 +109,23 @@ public class AppPanel extends JPanel implements ActionListener, PropertyChangeLi
                 setModel(factory.makeModel());
                 view.setModel(model);
             } else if (cmmd == "Quit") {
+                if (!model.getUnsavedChanges())
+                {
+                    System.exit(1);
+                } else {
+                    boolean save = Utilities.confirm("There are unsaved changes. Do you want to save?");
+                    if (save) {
+                        System.exit(1);
+                    } else {
+                        String fName = Utilities.getFileName(null, false);
+                        ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(fName));
+                        os.writeObject(model);
+                        os.close();
+                        model.setUnsavedChanges(false);
+                    }
+                }
                 //Utilities.saveChanges(model);
-                System.exit(1);
+                //System.exit(1);
             } else if (cmmd == "About") {
                 Utilities.inform(factory.about());
             } else if (cmmd == "Help") {
