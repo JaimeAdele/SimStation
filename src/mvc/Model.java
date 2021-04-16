@@ -18,6 +18,9 @@ public abstract class Model extends Bean {
     public void setFileName(String newFileName) {
         fileName = newFileName;
     }
+    
+    public void setUnsavedChanges(boolean b) { unsavedChanges = b; }
+    public boolean getUnsavedChanges() { return unsavedChanges; }
 
     public void changed() {
         firePropertyChange("unsavedChanges", unsavedChanges, true);
